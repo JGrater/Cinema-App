@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:11
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_HOST_AUTH_METHOD=md5
+    networks:
+      - local
+  dbeaver:
+    image: dbeaver/cloudbeaver:latest
+    volumes:
+      - "dbeaver_data:/opt/cloudbeaver/workspace:rw"
+      - "./cloudbeaver/cloudbeaver.json:/opt/cloudbeaver/conf/cloudbeaver.conf"
+      - "./cloudbeaver/data-sources.json:/opt/cloudbeaver/conf/initial-data-sources.conf"
+    ports:
+      - "8978:8978"
+    networks:
+      - local
+volumes:
+  dbeaver_data:
+    driver: local
+  postgres_data:
+    driver: local
+networks:
+  local:
