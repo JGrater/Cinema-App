@@ -18,7 +18,7 @@
 				"user": "admin",
 				"password": "admin",
 				"provider-properties": {
-					"@dbeaver-show-non-default-db@": "false"
+					"@dbeaver-show-non-default-db@": "true"
 				}
 			}
 		}
