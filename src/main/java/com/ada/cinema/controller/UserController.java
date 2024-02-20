@@ -54,7 +54,7 @@ public class UserController {
         return ResponseEntity.ok().body(cinemaService.getUser(username, password));
     }
 
-    @GetMapping("/getUser")
+    @GetMapping("/getUserById")
     ResponseEntity<Optional<UserDao>> getUser(
             @RequestParam() String id
     )
