@@ -108,8 +108,8 @@ public class MovieController {
                     .trending(MediaType.MOVIE, TimeWindow.DAY)
                     .execute();
             if (response.isSuccessful()) {
-                TrendingResultsPage reviewResultsPage = response.body();
-                return ResponseEntity.ok().body(reviewResultsPage.results);
+                TrendingResultsPage trendingResultsPage = response.body();
+                return ResponseEntity.ok().body(trendingResultsPage.results);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -124,8 +124,8 @@ public class MovieController {
                     .trending(MediaType.MOVIE, TimeWindow.WEEK)
                     .execute();
             if (response.isSuccessful()) {
-                TrendingResultsPage reviewResultsPage = response.body();
-                return ResponseEntity.ok().body(reviewResultsPage.results);
+                TrendingResultsPage trendingResultsPage = response.body();
+                return ResponseEntity.ok().body(trendingResultsPage.results);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
