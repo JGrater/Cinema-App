@@ -29,6 +29,11 @@ public class CinemaController {
 
      */
 
+    @GetMapping("")
+    public ResponseEntity<CinemaDao> cinemaDetails(@RequestParam() String cinema_id) {
+        return ResponseEntity.ok().body(cinemaService.getCinemaById(cinema_id));
+    }
+
     // Add cinema
     @PostMapping("/add")
     public ResponseEntity<CinemaDao> addCinema(

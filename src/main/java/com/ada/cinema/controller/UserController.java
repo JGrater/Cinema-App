@@ -62,7 +62,7 @@ public class UserController {
     }
 
     // Returns user profile by id
-    @GetMapping("/detailsById")
+    @GetMapping("")
     ResponseEntity<UserDao> userDetails(
             @RequestParam() String id
     )
@@ -84,7 +84,7 @@ public class UserController {
     }
 
     // Returns users payment details
-    @GetMapping("/payment/details")
+    @GetMapping("/payment")
     public ResponseEntity<PaymentDao> paymentDetails(@RequestParam() String user_id) {
         return ResponseEntity.ok().body(cinemaService.getPaymentDetailsByUserId(user_id));
     }
