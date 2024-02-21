@@ -32,13 +32,13 @@ public class ScreeningDao {
     @JoinColumn(name = "cinema_id", referencedColumnName = "id")
     private CinemaDao cinemaDao;
 
-    private int movie_id;
+    private int movieId;
 
-    public ScreeningDao(double price, LocalDateTime screening_date, CinemaDao cinemaDao, int movie_id) {
+    public ScreeningDao(double price, LocalDateTime screening_date, CinemaDao cinemaDao, int movieId) {
         this.price = price;
         this.screening_date = screening_date;
         this.cinemaDao = cinemaDao;
-        this.movie_id = movie_id;
+        this.movieId = movieId;
     }
 
     public ScreeningDao() {
@@ -65,11 +65,11 @@ public class ScreeningDao {
     }
 
     public int getMovie_id() {
-        return movie_id;
+        return movieId;
     }
 
-    public void setMovie_id(int movie_id) {
-        this.movie_id = movie_id;
+    public void setMovie_id(int movieId) {
+        this.movieId = movieId;
     }
 
     public CinemaDao getCinemaDao() {

@@ -91,7 +91,7 @@ public class CinemaController {
     }
 
     // Returns list of screenings by movie and cinema
-    @GetMapping("/screening/details")
+    @GetMapping("/screening/details/list")
     public ResponseEntity<List<ScreeningDao>> screeningDetailsList(
         @RequestParam() String cinema_id,
         @RequestParam() int movie_id)

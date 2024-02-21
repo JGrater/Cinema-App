@@ -60,7 +60,7 @@ public class CinemaService {
     }
 
     public List<CinemaDao> getCinemaListByMovie(int movie_id) {
-        List<ScreeningDao> screeningList = screeningRepository.findAllByMovie_id(movie_id);
+        List<ScreeningDao> screeningList = screeningRepository.findAllByMovieId(movie_id);
         List<CinemaDao> cinemaList = new ArrayList<>();
         for (ScreeningDao screeningDao : screeningList) {
             cinemaList.add(cinemaRepository.getById(screeningDao.getCinemaDao().getId()));
@@ -73,7 +73,7 @@ public class CinemaService {
     }
 
     public List<ScreeningDao> getScreeningsByCinemaAndMovie(String cinema_id, int movie_id) {
-        return screeningRepository.findAllByCinemaDaoAndMovie_id(getCinemaById(cinema_id), movie_id);
+        return screeningRepository.findAllByCinemaDaoAndMovieId(getCinemaById(cinema_id), movie_id);
     }
 
     /*public List<SeatDao> getSeatListAvailableByScreening(String screening_id) {
