@@ -52,7 +52,7 @@ public class UserController {
 
 
     // Returns user profile by username and password
-    @GetMapping("/details")
+    @GetMapping("/login")
     ResponseEntity<UserDao> userDetails(
         @RequestParam() String username,
         @RequestParam() String password
@@ -68,16 +68,6 @@ public class UserController {
     )
     {
         return ResponseEntity.ok().body(cinemaService.getUserById(id));
-    }
-
-    // Returns false if user doesn't exist
-    @GetMapping("/login")
-    ResponseEntity<Boolean> login(
-            @RequestParam() String username,
-            @RequestParam() String password
-    )
-    {
-        return ResponseEntity.ok().body(!cinemaService.getUser(username,password).getClass().equals(UserDao.class));
     }
 
     // Add payment

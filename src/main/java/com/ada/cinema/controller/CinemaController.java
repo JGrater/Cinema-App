@@ -85,13 +85,13 @@ public class CinemaController {
     }
 
     // Returns screening details by id
-    @GetMapping("/screening/details")
+    @GetMapping("/screening")
     public ResponseEntity<ScreeningDao> screeningDetails(@RequestParam() String screening_id) {
         return ResponseEntity.ok().body(cinemaService.getScreeningById(screening_id));
     }
 
     // Returns list of screenings by movie and cinema
-    @GetMapping("/screening/details/list")
+    @GetMapping("/screening/movie")
     public ResponseEntity<List<ScreeningDao>> screeningDetailsList(
         @RequestParam() String cinema_id,
         @RequestParam() int movie_id)
@@ -108,7 +108,7 @@ public class CinemaController {
      */
 
     // Return seat details by id
-    @GetMapping("/seat/details")
+    @GetMapping("/seat")
     public ResponseEntity<SeatDao> seatDetails(@RequestParam() String seat_id) {
         return ResponseEntity.ok().body(cinemaService.getSeatById(seat_id));
     }
@@ -125,7 +125,7 @@ public class CinemaController {
      */
 
     // Returns ticket details by id
-    @GetMapping("/ticket/details")
+    @GetMapping("/ticket")
     public ResponseEntity<TicketDao> ticketDetails(@RequestParam() String ticket_id) {
         return ResponseEntity.ok().body(cinemaService.getTicketById(ticket_id));
     }
