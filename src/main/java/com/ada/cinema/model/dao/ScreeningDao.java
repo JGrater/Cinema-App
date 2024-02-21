@@ -1,0 +1,82 @@
+package com.ada.cinema.model.dao;
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.UUID;
+
+@Entity
+@Table(
+        name = "screening"
+)
+public class ScreeningDao {
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(columnDefinition = "uuid", updatable = false)
+    private UUID id;
+
+    @Column
+    private double price;
+
+    @Column
+    private LocalDateTime screening_date;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cinema_id", referencedColumnName = "id")
+    private CinemaDao cinemaDao;
+
+    private int movie_id;
+
+    public ScreeningDao(double price, LocalDateTime screening_date, CinemaDao cinemaDao, int movie_id) {
+        this.price = price;
+        this.screening_date = screening_date;
+        this.cinemaDao = cinemaDao;
+        this.movie_id = movie_id;
+    }
+
+    public ScreeningDao() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public LocalDateTime getScreening_date() {
+        return screening_date;
+    }
+
+    public void setScreening_date(LocalDateTime screening_date) {
+        this.screening_date = screening_date;
+    }
+
+    public int getMovie_id() {
+        return movie_id;
+    }
+
+    public void setMovie_id(int movie_id) {
+        this.movie_id = movie_id;
+    }
+
+    public CinemaDao getCinemaDao() {
+        return cinemaDao;
+    }
+
+    public void setCinemaDao(CinemaDao cinemaDao) {
+        this.cinemaDao = cinemaDao;
+    }
+}

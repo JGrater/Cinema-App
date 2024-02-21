@@ -3,37 +3,30 @@ package com.ada.cinema.model.dao;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(
-    name = "user"
+        name = "cinema"
 )
-public class UserDao {
+public class CinemaDao {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
     @Column
-    private String username;
+    private String name;
 
     @Column
-    private String password;
-
-    @Column
-    private String email;
-
-    @Column
-    private String first_name;
-
-    @Column
-    private String last_name;
+    private String company_name;
 
     @Column
     private String address;
@@ -47,71 +40,48 @@ public class UserDao {
     @Column
     private String country;
 
-
     @Column
     private String postcode;
 
-    public UserDao() {
+    @Column
+    private LocalDateTime registered_date;
 
-    }
+    @Column
+    private int screens;
 
-    public UserDao(String username, String password, String email, String first_name, String last_name, String address, String city, String province, String country, String postcode) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public CinemaDao(String name, String company_name, String address, String city, String province, String country, String postcode, LocalDateTime registered_date, int screens) {
+        this.name = name;
+        this.company_name = company_name;
         this.address = address;
         this.city = city;
         this.province = province;
         this.country = country;
         this.postcode = postcode;
+        this.registered_date = registered_date;
+        this.screens = screens;
     }
 
+    public CinemaDao() {
+    }
 
     public UUID getId() {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getCompanyName() {
+        return company_name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return first_name;
-    }
-
-    public void setFirstName(String first_name) {
-        this.first_name = first_name;
-    }
-
-    public String getLastName() {
-        return last_name;
-    }
-
-    public void setLastName(String last_name) {
-        this.last_name = last_name;
+    public void setCompanyName(String company_name) {
+        this.company_name = company_name;
     }
 
     public String getAddress() {
@@ -152,5 +122,21 @@ public class UserDao {
 
     public void setPostcode(String postcode) {
         this.postcode = postcode;
+    }
+
+    public LocalDateTime getRegisteredDate() {
+        return registered_date;
+    }
+
+    public void setRegisteredDate(LocalDateTime registered_date) {
+        this.registered_date = registered_date;
+    }
+
+    public int getScreens() {
+        return screens;
+    }
+
+    public void setScreens(int screens) {
+        this.screens = screens;
     }
 }

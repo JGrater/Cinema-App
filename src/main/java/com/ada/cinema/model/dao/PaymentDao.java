@@ -22,27 +22,31 @@ public class PaymentDao {
     private UUID id;
 
     @Column
-    private String paymentType;
+    private String payment_type;
 
     @Column
-    private String cardNumber;
+    private String card_number;
 
     @Column
-    private String cardName;
+    private String card_name;
 
     @Column
-    private Date expiryDate;
+    private Date expiry_date;
 
     @Column
     private String cvv;
 
-    public PaymentDao(UUID id, String paymentType, String cardNumber, String cardName, Date expiryDate, String cvv) {
-        this.id = id;
-        this.paymentType = paymentType;
-        this.cardNumber = cardNumber;
-        this.cardName = cardName;
-        this.expiryDate = expiryDate;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserDao userDao;
+
+    public PaymentDao(String payment_type, String card_number, String card_name, Date expiry_date, String cvv, UserDao userDao) {
+        this.payment_type = payment_type;
+        this.card_number = card_number;
+        this.card_name = card_name;
+        this.expiry_date = expiry_date;
         this.cvv = cvv;
+        this.userDao = userDao;
     }
 
     public PaymentDao() {
@@ -53,40 +57,36 @@ public class PaymentDao {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public String getPaymentType() {
-        return paymentType;
+        return payment_type;
     }
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
+    public void setPaymentType(String payment_type) {
+        this.payment_type = payment_type;
     }
 
     public String getCardNumber() {
-        return cardNumber;
+        return card_number;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setCardNumber(String card_number) {
+        this.card_number = card_number;
     }
 
     public String getCardName() {
-        return cardName;
+        return card_name;
     }
 
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
+    public void setCardName(String card_name) {
+        this.card_name = card_name;
     }
 
     public Date getExpiryDate() {
-        return expiryDate;
+        return expiry_date;
     }
 
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
+    public void setExpiryDate(Date expiry_date) {
+        this.expiry_date = expiry_date;
     }
 
     public String getCvv() {
@@ -95,5 +95,13 @@ public class PaymentDao {
 
     public void setCvv(String cvv) {
         this.cvv = cvv;
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }
