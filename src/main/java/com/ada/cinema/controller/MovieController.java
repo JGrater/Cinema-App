@@ -38,10 +38,10 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    ResponseEntity<List<BaseMovie>> search(@RequestParam() String query)  {
+    ResponseEntity<List<BaseMovie>> search(@RequestParam() String search)  {
         try {
             Response<MovieResultsPage> response = searchService
-                    .movie(query, 1, "en-US", "", false,null,null)
+                    .movie(search, 1, "en-US", "", false,null,null)
                     .execute();
             if (response.isSuccessful()) {
                 MovieResultsPage movies = response.body();
@@ -53,11 +53,11 @@ public class MovieController {
         return null;
     }
 
-    @GetMapping("/details")
-    ResponseEntity<Movie> details(@RequestParam() int id) {
+    @GetMapping("")
+    ResponseEntity<Movie> details(@RequestParam() int movie_id) {
         try {
             Response<Movie> response = moviesService
-                    .summary(id, "en-Us")
+                    .summary(movie_id, "en-Us")
                     .execute();
             if (response.isSuccessful()) {
                 Movie movie = response.body();
@@ -70,14 +70,46 @@ public class MovieController {
     }
 
     @GetMapping("/reviews")
-    ResponseEntity<List<Review>> reviews(@RequestParam() int id) {
+    ResponseEntity<List<Review>> reviews(@RequestParam() int movie_id) {
         try {
             Response<ReviewResultsPage> response = moviesService
-                    .reviews(id, 1,"en-Us")
+                    .reviews(movie_id, 1,"en-Us")
                     .execute();
             if (response.isSuccessful()) {
                 ReviewResultsPage reviewResultsPage = response.body();
                 return ResponseEntity.ok().body(reviewResultsPage.results);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @GetMapping("/cast")
+    ResponseEntity<List<CastMember>> cast(@RequestParam() int movie_id) {
+        try {
+            Response<Credits> response = moviesService
+                    .credits(movie_id)
+                    .execute();
+            if (response.isSuccessful()) {
+                Credits credits = response.body();
+                return ResponseEntity.ok().body(credits.cast);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @GetMapping("/release")
+    ResponseEntity<List<ReleaseDatesResult>> release(@RequestParam() int movie_id) {
+        try {
+            Response<ReleaseDatesResults> response = moviesService
+                    .releaseDates(movie_id)
+                    .execute();
+            if (response.isSuccessful()) {
+                ReleaseDatesResults releaseDatesResults = response.body();
+                return ResponseEntity.ok().body(releaseDatesResults.results);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
