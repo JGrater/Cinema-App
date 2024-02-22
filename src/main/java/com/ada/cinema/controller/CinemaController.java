@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -22,12 +21,17 @@ public class CinemaController {
     }
 
     // make booking > create ticket >
-    /*@GetMapping("/processBooking")
-    public ResponseEntity<TicketDao> booking(@RequestParam() String screening_id) {
-        return ResponseEntity.ok().body();
+    @GetMapping("/booking")
+    public ResponseEntity<TicketDao> booking(
+            @RequestParam() String screening_id,
+            @RequestParam() String seat_id,
+            @RequestParam() String user_id)
+    {
+        return ResponseEntity.ok().body(cinemaService.addTicket(new TicketDao(LocalDateTime.now(),
+            cinemaService.getScreeningById(screening_id),
+            cinemaService.getSeatById(seat_id),
+            cinemaService.getUserById(user_id))));
     }
-
-     */
 
     @GetMapping("")
     public ResponseEntity<CinemaDao> cinemaDetails(@RequestParam() String cinema_id) {
@@ -116,17 +120,6 @@ public class CinemaController {
     public ResponseEntity<SeatDao> seatDetails(@RequestParam() String seat_id) {
         return ResponseEntity.ok().body(cinemaService.getSeatById(seat_id));
     }
-
-    // Returns true if seat is free for screening
-    /*@GetMapping("/seat/available")
-    public ResponseEntity<Boolean> seatAvailability(
-            @RequestParam() String screening_id,
-            @RequestParam() String seat_id)
-    {
-        return ResponseEntity.ok().body(cinemaService.)
-    }
-
-     */
 
     // Returns ticket details by id
     @GetMapping("/ticket")

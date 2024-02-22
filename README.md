@@ -6,6 +6,7 @@
 |-----------------------------|--------------------------------------------------------------------------------------------|--------|--------------------------------------------------|
 | /cinema                     | cinema_id                                                                                  | GET    | Cinema                                           |
 | /cinema/add                 | name, company_name, address, city, province, country, postcode, (int) screens              | POST   | Cinema Added                                     |
+| /cinema/booking             | screening_id, seat_id, user_id                                                             | POST   | New Ticket purchased                             |
 | /cinema/movie               | (int) movie_id                                                                             | GET    | List of cinemas showing the movie                |
 | /cinema/screening           | screening_id                                                                               | GET    | Screening                                        |
 | /cinema/screening/add       | (double) price, (LocalDateTime) screening_date, cinema_id, (int) movie_id                  | POST   | Screening Added                                  |
