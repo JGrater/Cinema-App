@@ -53,11 +53,11 @@ public class CinemaController {
     @PostMapping("/screening/add")
     public ResponseEntity<ScreeningDao> addScreening(
             @RequestParam() double price,
-            @RequestParam() LocalDateTime screening_date,
+            @RequestParam() String screening_date,
             @RequestParam() String cinema_id,
             @RequestParam() int movie_id)
     {
-        return ResponseEntity.ok().body(cinemaService.addScreening(new ScreeningDao(price, screening_date, cinemaService.getCinemaById(cinema_id),movie_id)));
+        return ResponseEntity.ok().body(cinemaService.addScreening(new ScreeningDao(price, LocalDateTime.parse(screening_date), cinemaService.getCinemaById(cinema_id),movie_id)));
     }
 
     // Add seat
@@ -84,7 +84,7 @@ public class CinemaController {
     }
 
     // Returns list of cinemas screening movie
-    @GetMapping("/screening/list")
+    @GetMapping("/movie")
     public ResponseEntity<List<CinemaDao>> cinemasScreeningList(@RequestParam() int movie_id) {
         return ResponseEntity.ok().body(cinemaService.getCinemaListByMovie(movie_id));
     }

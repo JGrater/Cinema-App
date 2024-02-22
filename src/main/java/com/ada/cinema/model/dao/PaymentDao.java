@@ -3,6 +3,7 @@ package com.ada.cinema.model.dao;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,16 +32,17 @@ public class PaymentDao {
     private String card_name;
 
     @Column
-    private Date expiry_date;
+    private LocalDate expiry_date;
 
     @Column
     private String cvv;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserDao userDao;
 
-    public PaymentDao(String payment_type, String card_number, String card_name, Date expiry_date, String cvv, UserDao userDao) {
+    public PaymentDao(String payment_type, String card_number, String card_name, LocalDate expiry_date, String cvv, UserDao userDao) {
         this.payment_type = payment_type;
         this.card_number = card_number;
         this.card_name = card_name;
@@ -81,11 +83,11 @@ public class PaymentDao {
         this.card_name = card_name;
     }
 
-    public Date getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return expiry_date;
     }
 
-    public void setExpiryDate(Date expiry_date) {
+    public void setExpiryDate(LocalDate expiry_date) {
         this.expiry_date = expiry_date;
     }
 

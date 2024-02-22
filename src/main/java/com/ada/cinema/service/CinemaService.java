@@ -32,7 +32,7 @@ public class CinemaService {
     }
 
     public UserDao getUserById(String user_id) {
-        return userRepository.getById(UUID.fromString(user_id));
+        return userRepository.findById(UUID.fromString(user_id)).get();
     }
 
     public PaymentDao getPaymentDetailsByUserId(String user_id) {
@@ -40,11 +40,11 @@ public class CinemaService {
     }
 
     public SeatDao getSeatById(String seat_id) {
-        return seatRepository.getById(UUID.fromString(seat_id));
+        return seatRepository.findById(UUID.fromString(seat_id)).get();
     }
 
     public TicketDao getTicketById(String ticket_id) {
-        return ticketRepository.getById(UUID.fromString(ticket_id));
+        return ticketRepository.findById(UUID.fromString(ticket_id)).get();
     }
 
     public List<TicketDao> getUserTickets(String user_id) {
@@ -52,18 +52,18 @@ public class CinemaService {
     }
 
     public ScreeningDao getScreeningById(String screening_id) {
-        return screeningRepository.getById(UUID.fromString(screening_id));
+        return screeningRepository.findById(UUID.fromString(screening_id)).get();
     }
 
     public CinemaDao getCinemaById(String cinema_id) {
-        return cinemaRepository.getById(UUID.fromString(cinema_id));
+        return cinemaRepository.findById(UUID.fromString(cinema_id)).get();
     }
 
     public List<CinemaDao> getCinemaListByMovie(int movie_id) {
         List<ScreeningDao> screeningList = screeningRepository.findAllByMovieId(movie_id);
         List<CinemaDao> cinemaList = new ArrayList<>();
         for (ScreeningDao screeningDao : screeningList) {
-            cinemaList.add(cinemaRepository.getById(screeningDao.getCinemaDao().getId()));
+            cinemaList.add(cinemaRepository.findById(screeningDao.getCinemaDao().getId()).get());
         }
         return cinemaList.stream()
             .collect(Collectors.toMap(v -> v.getId(),

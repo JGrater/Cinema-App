@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,7 @@ public class UserController {
 
 
     @PostMapping("/register")
-    ResponseEntity<String> register(
+    ResponseEntity<UserDao> register(
         @RequestParam() String username,
         @RequestParam() String password,
         @RequestParam() String email,
@@ -41,15 +42,8 @@ public class UserController {
 
         )
     {
-        UserDao newUser = new UserDao(username, password, email, firstName, lastName, address, city, province, country, postcode);
-
-        cinemaService.registerUser(newUser);
-
-        return ResponseEntity.ok().body("Account Registered");
+        return ResponseEntity.ok().body(cinemaService.registerUser(new UserDao(username, password, email, firstName, lastName, address, city, province, country, postcode)));
     }
-
-    // Return true if username is valid
-
 
     // Returns user profile by username and password
     @GetMapping("/login")
@@ -64,10 +58,10 @@ public class UserController {
     // Returns user profile by id
     @GetMapping("")
     ResponseEntity<UserDao> userDetails(
-            @RequestParam() String id
+            @RequestParam() String user_id
     )
     {
-        return ResponseEntity.ok().body(cinemaService.getUserById(id));
+        return ResponseEntity.ok().body(cinemaService.getUserById(user_id));
     }
 
     // Add payment
@@ -76,11 +70,11 @@ public class UserController {
             @RequestParam() String payment_type,
             @RequestParam() String card_number,
             @RequestParam() String card_name,
-            @RequestParam() Date expiry_date,
+            @RequestParam() String expiry_date,
             @RequestParam() String cvv,
             @RequestParam() String user_id)
     {
-        return ResponseEntity.ok().body(cinemaService.addPaymentDetails(new PaymentDao(payment_type, card_number, card_name, expiry_date, cvv, cinemaService.getUserById(user_id))));
+        return ResponseEntity.ok().body(cinemaService.addPaymentDetails(new PaymentDao(payment_type, card_number, card_name, LocalDate.parse(expiry_date), cvv, cinemaService.getUserById(user_id))));
     }
 
     // Returns users payment details
