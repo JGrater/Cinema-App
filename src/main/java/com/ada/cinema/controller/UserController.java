@@ -29,29 +29,27 @@ public class UserController {
 
     @PostMapping("/register")
     ResponseEntity<UserDao> register(
-        @RequestParam() String username,
-        @RequestParam() String password,
-        @RequestParam() String email,
-        @RequestParam() String firstName,
-        @RequestParam() String lastName,
-        @RequestParam() String address,
-        @RequestParam() String city,
-        @RequestParam() String province,
-        @RequestParam() String country,
-        @RequestParam() String postcode
+            @RequestParam() String username,
+            @RequestParam() String password,
+            @RequestParam() String email,
+            @RequestParam() String firstName,
+            @RequestParam() String lastName,
+            @RequestParam() String address,
+            @RequestParam() String city,
+            @RequestParam() String province,
+            @RequestParam() String country,
+            @RequestParam() String postcode
 
-        )
-    {
+    ) {
         return ResponseEntity.ok().body(cinemaService.registerUser(new UserDao(username, password, email, firstName, lastName, address, city, province, country, postcode)));
     }
 
     // Returns user profile by username and password
     @GetMapping("/login")
     ResponseEntity<UserDao> userDetails(
-        @RequestParam() String username,
-        @RequestParam() String password
-    )
-    {
+            @RequestParam() String username,
+            @RequestParam() String password
+    ) {
         return ResponseEntity.ok().body(cinemaService.getUser(username, password));
     }
 
@@ -59,8 +57,7 @@ public class UserController {
     @GetMapping("")
     ResponseEntity<UserDao> userDetails(
             @RequestParam() String user_id
-    )
-    {
+    ) {
         return ResponseEntity.ok().body(cinemaService.getUserById(user_id));
     }
 
@@ -72,8 +69,7 @@ public class UserController {
             @RequestParam() String card_name,
             @RequestParam() String expiry_date,
             @RequestParam() String cvv,
-            @RequestParam() String user_id)
-    {
+            @RequestParam() String user_id) {
         return ResponseEntity.ok().body(cinemaService.addPaymentDetails(new PaymentDao(payment_type, card_number, card_name, LocalDate.parse(expiry_date), cvv, cinemaService.getUserById(user_id))));
     }
 

@@ -20,7 +20,7 @@ public class SeatDao {
     private UUID id;
 
     @Column
-    private int screen_number;
+    private int screenNumber;
 
     @Column
     private char row;
@@ -32,8 +32,8 @@ public class SeatDao {
     @JoinColumn(name = "cinema_id", referencedColumnName = "id")
     private CinemaDao cinemaDao;
 
-    public SeatDao(int screen_number, char row, int seat_number, CinemaDao cinemaDao) {
-        this.screen_number = screen_number;
+    public SeatDao(int screenNumber, char row, int seat_number, CinemaDao cinemaDao) {
+        this.screenNumber = screenNumber;
         this.row = row;
         this.seat_number = seat_number;
         this.cinemaDao = cinemaDao;
@@ -47,11 +47,11 @@ public class SeatDao {
     }
 
     public int getScreen_number() {
-        return screen_number;
+        return screenNumber;
     }
 
-    public void setScreen_number(int screen_number) {
-        this.screen_number = screen_number;
+    public void setScreen_number(int screenNumber) {
+        this.screenNumber = screenNumber;
     }
 
     public char getRow() {

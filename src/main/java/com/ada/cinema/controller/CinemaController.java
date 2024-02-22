@@ -44,9 +44,8 @@ public class CinemaController {
             @RequestParam() String province,
             @RequestParam() String country,
             @RequestParam() String postcode,
-            @RequestParam() int screens)
-    {
-        return ResponseEntity.ok().body(cinemaService.addCinema(new CinemaDao(name, company_name, address, city, province, country, postcode, LocalDateTime.now(),screens)));
+            @RequestParam() int screens) {
+        return ResponseEntity.ok().body(cinemaService.addCinema(new CinemaDao(name, company_name, address, city, province, country, postcode, LocalDateTime.now(), screens)));
     }
 
     // Add Screening
@@ -54,10 +53,10 @@ public class CinemaController {
     public ResponseEntity<ScreeningDao> addScreening(
             @RequestParam() double price,
             @RequestParam() String screening_date,
+            @RequestParam() int screen_number,
             @RequestParam() String cinema_id,
-            @RequestParam() int movie_id)
-    {
-        return ResponseEntity.ok().body(cinemaService.addScreening(new ScreeningDao(price, LocalDateTime.parse(screening_date), cinemaService.getCinemaById(cinema_id),movie_id)));
+            @RequestParam() int movie_id) {
+        return ResponseEntity.ok().body(cinemaService.addScreening(new ScreeningDao(price, LocalDateTime.parse(screening_date), screen_number, cinemaService.getCinemaById(cinema_id), movie_id)));
     }
 
     // Add seat
@@ -66,8 +65,7 @@ public class CinemaController {
             @RequestParam() int screen_number,
             @RequestParam() char row,
             @RequestParam() int seat_number,
-            @RequestParam() String cinema_id)
-    {
+            @RequestParam() String cinema_id) {
         return ResponseEntity.ok().body(cinemaService.addSeat(new SeatDao(screen_number, row, seat_number, cinemaService.getCinemaById(cinema_id))));
     }
 
@@ -75,8 +73,7 @@ public class CinemaController {
     public ResponseEntity<TicketDao> addTicket(
             @RequestParam() String screening_id,
             @RequestParam() String seat_id,
-            @RequestParam() String user_id)
-    {
+            @RequestParam() String user_id) {
         return ResponseEntity.ok().body(cinemaService.addTicket(new TicketDao(LocalDateTime.now(),
                 cinemaService.getScreeningById(screening_id),
                 cinemaService.getSeatById(seat_id),
@@ -98,19 +95,21 @@ public class CinemaController {
     // Returns list of screenings by movie and cinema
     @GetMapping("/screening/movie")
     public ResponseEntity<List<ScreeningDao>> screeningDetailsList(
-        @RequestParam() String cinema_id,
-        @RequestParam() int movie_id)
-    {
+            @RequestParam() String cinema_id,
+            @RequestParam() int movie_id) {
         return ResponseEntity.ok().body(cinemaService.getScreeningsByCinemaAndMovie(cinema_id, movie_id));
     }
 
     // Returns list of available seats for screening
-    /*@GetMapping("/screening/available")
+    @GetMapping("/screening/available")
     public ResponseEntity<List<SeatDao>> screeningAvailability(@RequestParam() String screening_id) {
-        return ResponseEntity.ok().body(cinemaService.getSeatListAvailableByScreening(screening_id));
+        return ResponseEntity.ok().body(cinemaService.getSeatsAvailableByScreening(screening_id));
     }
 
-     */
+    @GetMapping("/screening/seat")
+    public ResponseEntity<List<SeatDao>> screeningSeats(@RequestParam() String cinema_id, int screen_number) {
+        return ResponseEntity.ok().body(cinemaService.getAllSeatsByCinemaIDAndScreen(cinema_id, screen_number));
+    }
 
     // Return seat details by id
     @GetMapping("/seat")

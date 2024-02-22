@@ -38,10 +38,10 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    ResponseEntity<List<BaseMovie>> search(@RequestParam() String search)  {
+    ResponseEntity<List<BaseMovie>> search(@RequestParam() String search) {
         try {
             Response<MovieResultsPage> response = searchService
-                    .movie(search, 1, "en-US", "", false,null,null)
+                    .movie(search, 1, "en-US", "", false, null, null)
                     .execute();
             if (response.isSuccessful()) {
                 MovieResultsPage movies = response.body();
@@ -73,7 +73,7 @@ public class MovieController {
     ResponseEntity<List<Review>> reviews(@RequestParam() int movie_id) {
         try {
             Response<ReviewResultsPage> response = moviesService
-                    .reviews(movie_id, 1,"en-Us")
+                    .reviews(movie_id, 1, "en-Us")
                     .execute();
             if (response.isSuccessful()) {
                 ReviewResultsPage reviewResultsPage = response.body();
@@ -121,7 +121,7 @@ public class MovieController {
     ResponseEntity<List<Review>> rate(@RequestParam() int id) {
         try {
             Response<ReviewResultsPage> response = moviesService
-                    .reviews(id, 1,"en-Us")
+                    .reviews(id, 1, "en-Us")
                     .execute();
             if (response.isSuccessful()) {
                 ReviewResultsPage reviewResultsPage = response.body();

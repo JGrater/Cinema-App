@@ -28,15 +28,19 @@ public class ScreeningDao {
     @Column
     private LocalDateTime screening_date;
 
+    @Column
+    private int screen_number;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cinema_id", referencedColumnName = "id")
     private CinemaDao cinemaDao;
 
     private int movieId;
 
-    public ScreeningDao(double price, LocalDateTime screening_date, CinemaDao cinemaDao, int movieId) {
+    public ScreeningDao(double price, LocalDateTime screening_date, int screen_number, CinemaDao cinemaDao, int movieId) {
         this.price = price;
         this.screening_date = screening_date;
+        this.screen_number = screen_number;
         this.cinemaDao = cinemaDao;
         this.movieId = movieId;
     }
@@ -64,12 +68,12 @@ public class ScreeningDao {
         this.screening_date = screening_date;
     }
 
-    public int getMovie_id() {
-        return movieId;
+    public int getScreen_number() {
+        return screen_number;
     }
 
-    public void setMovie_id(int movieId) {
-        this.movieId = movieId;
+    public void setScreen_number(int screen_number) {
+        this.screen_number = screen_number;
     }
 
     public CinemaDao getCinemaDao() {
@@ -78,5 +82,13 @@ public class ScreeningDao {
 
     public void setCinemaDao(CinemaDao cinemaDao) {
         this.cinemaDao = cinemaDao;
+    }
+
+    public int getMovie_id() {
+        return movieId;
+    }
+
+    public void setMovie_id(int movieId) {
+        this.movieId = movieId;
     }
 }

@@ -76,17 +76,28 @@ public class CinemaService {
         return screeningRepository.findAllByCinemaDaoAndMovieId(getCinemaById(cinema_id), movie_id);
     }
 
-    /*public List<SeatDao> getSeatListAvailableByScreening(String screening_id) {
-        List<TicketDao> ticketList = ticketRepository.findAllByScreeningDao(getScreeningById(screening_id));
-        List<SeatDao> seatList = seatRepository.findAllAvailableSeats(
-                    ticketList.get(i),
-                    ticketList.get(i).getSeatDao().getCinemaDao(),
-                    ticketList.get(i).getSeatDao().getScreen_number()
-            ));
-        }
+    public List<SeatDao> getAllSeatsByCinemaIDAndScreen(String cinema_id, int screen_number) {
+        return seatRepository.findAllByCinemaDaoAndScreenNumber(getCinemaById(cinema_id), screen_number);
     }
 
-     */
+    public List<SeatDao> getAllSeatsByCinemaAndScreen(CinemaDao cinema, int screen_number) {
+        return seatRepository.findAllByCinemaDaoAndScreenNumber(cinema, screen_number);
+    }
+
+    public List<SeatDao> getSeatsAvailableByScreening(String screening_id) {
+        ScreeningDao screening = getScreeningById(screening_id);
+        List<TicketDao> purcahsedTicketList = ticketRepository.findAllByScreeningDao(screening);
+
+        if (purcahsedTicketList.isEmpty()) {
+            return getAllSeatsByCinemaAndScreen(screening.getCinemaDao(), screening.getScreen_number());
+        }
+
+        return seatRepository.findAllAvailableSeats(
+                purcahsedTicketList,
+                screening.getCinemaDao().getId(),
+                screening.getScreen_number()
+        );
+    }
 
     public CinemaDao addCinema(CinemaDao cinemaDao) {
         return cinemaRepository.save(cinemaDao);
