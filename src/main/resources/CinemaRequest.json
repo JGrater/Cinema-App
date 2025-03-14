@@ -1,0 +1,33 @@
+{
+    "name": "Silver Screen Plaza",
+    "company_name": "Cineplex Corp",
+    "address": {
+      "address": "123 Movie Lane",
+      "city": "Los Angeles",
+      "province": "California",
+      "postcode": "90001",
+      "country": "USA"
+    },
+    "screens": [
+      {
+        "screen_number": 1,
+        "seats": [
+          {"row": "A", "seat_number": 1},
+          {"row": "A", "seat_number": 2},
+          {"row": "A", "seat_number": 3},
+          {"row": "B", "seat_number": 1},
+          {"row": "B", "seat_number": 2}
+        ]
+      },
+      {
+        "screen_number": 2,
+        "seats": [
+          {"row": "A", "seat_number": 1},
+          {"row": "A", "seat_number": 2},
+          {"row": "B", "seat_number": 1},
+          {"row": "B", "seat_number": 2},
+          {"row": "B", "seat_number": 3}
+        ]
+      }
+    ]
+}
