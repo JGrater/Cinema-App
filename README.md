@@ -22,7 +22,9 @@ To run the Cinema App using Docker Compose, follow these steps:
     ```sh
     docker-compose up --build
     ```
-4. Open your browser and go to `http://localhost:8000` to access the application.
+4. Access the CloudBeaver instance for database management:
+    - Open your web browser and navigate to `http://localhost:8978`
+    - Use the provided credentials to log in and manage your database
 
 ## Resources
 
