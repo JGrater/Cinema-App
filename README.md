@@ -6,6 +6,7 @@ Cinema App is a backend Spring Boot web application designed to manage movie scr
 
 ## Entity Relationship Diagram
 
+![CinemaApp(1)](https://github.com/user-attachments/assets/c413fc7e-2986-4db0-8a32-d81e0ff81621)
 
 
 ## Running the Application
