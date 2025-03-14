@@ -1,19 +1,19 @@
 package com.ada.cinema.controller;
 
+import com.ada.cinema.model.dao.AddressDao;
+import com.ada.cinema.model.dao.LoginDao;
 import com.ada.cinema.model.dao.PaymentDao;
-import com.ada.cinema.model.dao.ScreeningDao;
 import com.ada.cinema.model.dao.TicketDao;
 import com.ada.cinema.model.dao.UserDao;
+import com.ada.cinema.model.user.PaymentRequest;
+import com.ada.cinema.model.user.RegisterRequest;
 import com.ada.cinema.service.CinemaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -28,20 +28,17 @@ public class UserController {
 
 
     @PostMapping("/register")
-    ResponseEntity<UserDao> register(
-            @RequestParam() String username,
-            @RequestParam() String password,
-            @RequestParam() String email,
-            @RequestParam() String firstName,
-            @RequestParam() String lastName,
-            @RequestParam() String address,
-            @RequestParam() String city,
-            @RequestParam() String province,
-            @RequestParam() String country,
-            @RequestParam() String postcode
-
-    ) {
-        return ResponseEntity.ok().body(cinemaService.registerUser(new UserDao(username, password, email, firstName, lastName, address, city, province, country, postcode)));
+    ResponseEntity<UserDao> register(@RequestBody RegisterRequest registerRequest) {
+        AddressDao addressDao = cinemaService.addAddress(new AddressDao(
+            registerRequest.getAddress().getAddress(), 
+            registerRequest.getAddress().getCity(), 
+            registerRequest.getAddress().getProvince(), 
+            registerRequest.getAddress().getPostcode(),
+            registerRequest.getAddress().getCountry()
+        ));
+        UserDao user = cinemaService.addUser(new UserDao(addressDao, registerRequest.getEmail(), registerRequest.getName()));
+        cinemaService.addLogin(new LoginDao(user, registerRequest.getLogin().getUsername(), registerRequest.getLogin().getPassword()));
+        return ResponseEntity.ok().body(user);
     }
 
     // Returns user profile by username and password
@@ -63,14 +60,15 @@ public class UserController {
 
     // Add payment
     @PostMapping("/payment/add")
-    public ResponseEntity<PaymentDao> addScreening(
-            @RequestParam() String payment_type,
-            @RequestParam() String card_number,
-            @RequestParam() String card_name,
-            @RequestParam() String expiry_date,
-            @RequestParam() String cvv,
-            @RequestParam() String user_id) {
-        return ResponseEntity.ok().body(cinemaService.addPaymentDetails(new PaymentDao(payment_type, card_number, card_name, LocalDate.parse(expiry_date), cvv, cinemaService.getUserById(user_id))));
+    public ResponseEntity<PaymentDao> addScreening(@RequestBody PaymentRequest paymentRequest) {
+        UserDao user = cinemaService.getUserById(paymentRequest.getUser_id());
+        return ResponseEntity.ok().body(cinemaService.addPaymentDetails(new PaymentDao(
+            user, 
+            paymentRequest.getCard_name(), 
+            paymentRequest.getCard_number(), 
+            LocalDate.parse(paymentRequest.getExpiry_date()), 
+            paymentRequest.getCvv()
+    )));
     }
 
     // Returns users payment details

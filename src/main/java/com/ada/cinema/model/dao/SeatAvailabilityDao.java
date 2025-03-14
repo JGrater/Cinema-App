@@ -1,20 +1,28 @@
 package com.ada.cinema.model.dao;
 
-import jakarta.persistence.*;
+import java.util.UUID;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.hibernate.annotations.GenericGenerator;
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 @Entity
 @Table(
-        name = "ticket"
+        name = "seat_availability"
 )
 @Getter
 @Setter
-public class TicketDao {
+public class SeatAvailabilityDao {
+    
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -31,22 +39,17 @@ public class TicketDao {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seat_id", referencedColumnName = "id")
     private SeatDao seatDao;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserDao userDao;
-
+    
     @Column
-    private LocalDateTime booking_date;
+    private boolean isAvailable;
 
-    public TicketDao(ScreeningDao screeningDao, SeatDao seatDao, UserDao userDao, LocalDateTime booking_date) {
+    public SeatAvailabilityDao(ScreeningDao screeningDao, SeatDao seatDao, boolean isAvailable) {
         this.screeningDao = screeningDao;
         this.seatDao = seatDao;
-        this.userDao = userDao;
-        this.booking_date = booking_date;
+        this.isAvailable = isAvailable;
     }
 
-    public TicketDao() {
+    public SeatAvailabilityDao() {
     }
 
 }

@@ -25,13 +25,11 @@ public class MovieController {
 
     private static final Tmdb tmdb = new Tmdb(API_KEY);
 
-    private final CinemaService cinemaService;
     private MoviesService moviesService;
     private SearchService searchService;
     private TrendingService trendingService;
 
     public MovieController(CinemaService cinemaService) {
-        this.cinemaService = cinemaService;
         this.moviesService = tmdb.moviesService();
         this.searchService = tmdb.searchService();
         this.trendingService = tmdb.trendingService();

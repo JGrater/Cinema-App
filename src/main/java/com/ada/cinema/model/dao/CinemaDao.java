@@ -1,16 +1,19 @@
 package com.ada.cinema.model.dao;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(
         name = "cinema"
 )
+@Getter
+@Setter
 public class CinemaDao {
 
     @Id
@@ -22,6 +25,10 @@ public class CinemaDao {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private AddressDao addressDao;
+
     @Column
     private String name;
 
@@ -29,114 +36,16 @@ public class CinemaDao {
     private String company_name;
 
     @Column
-    private String address;
-
-    @Column
-    private String city;
-
-    @Column
-    private String province;
-
-    @Column
-    private String country;
-
-    @Column
-    private String postcode;
-
-    @Column
-    private LocalDateTime registered_date;
-
-    @Column
     private int screens;
 
-    public CinemaDao(String name, String company_name, String address, String city, String province, String country, String postcode, LocalDateTime registered_date, int screens) {
+    public CinemaDao(AddressDao addressDao, String name, String company_name, int screens) {
+        this.addressDao = addressDao;
         this.name = name;
         this.company_name = company_name;
-        this.address = address;
-        this.city = city;
-        this.province = province;
-        this.country = country;
-        this.postcode = postcode;
-        this.registered_date = registered_date;
         this.screens = screens;
     }
 
     public CinemaDao() {
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCompanyName() {
-        return company_name;
-    }
-
-    public void setCompanyName(String company_name) {
-        this.company_name = company_name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
-
-    public LocalDateTime getRegisteredDate() {
-        return registered_date;
-    }
-
-    public void setRegisteredDate(LocalDateTime registered_date) {
-        this.registered_date = registered_date;
-    }
-
-    public int getScreens() {
-        return screens;
-    }
-
-    public void setScreens(int screens) {
-        this.screens = screens;
-    }
 }

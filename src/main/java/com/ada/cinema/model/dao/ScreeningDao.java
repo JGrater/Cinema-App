@@ -1,16 +1,21 @@
 package com.ada.cinema.model.dao;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import org.hibernate.annotations.Check;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @Table(
         name = "screening"
 )
+@Getter
+@Setter
 public class ScreeningDao {
 
     @Id
@@ -22,73 +27,28 @@ public class ScreeningDao {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "screen_id", referencedColumnName = "id")
+    private ScreenDao screenDao;
+
     @Column
+    private int movieId;
+
+    @Column
+    @Check(constraints = "price > 0")
     private double price;
 
     @Column
-    private LocalDateTime screening_date;
+    private LocalDateTime screeningDate;
 
-    @Column
-    private int screen_number;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cinema_id", referencedColumnName = "id")
-    private CinemaDao cinemaDao;
-
-    private int movieId;
-
-    public ScreeningDao(double price, LocalDateTime screening_date, int screen_number, CinemaDao cinemaDao, int movieId) {
-        this.price = price;
-        this.screening_date = screening_date;
-        this.screen_number = screen_number;
-        this.cinemaDao = cinemaDao;
+    public ScreeningDao(ScreenDao screenDao, int movieId, double price, LocalDateTime screeningDate) {
+        this.screenDao = screenDao;
         this.movieId = movieId;
+        this.price = price;
+        this.screeningDate = screeningDate;
     }
 
     public ScreeningDao() {
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public LocalDateTime getScreening_date() {
-        return screening_date;
-    }
-
-    public void setScreening_date(LocalDateTime screening_date) {
-        this.screening_date = screening_date;
-    }
-
-    public int getScreen_number() {
-        return screen_number;
-    }
-
-    public void setScreen_number(int screen_number) {
-        this.screen_number = screen_number;
-    }
-
-    public CinemaDao getCinemaDao() {
-        return cinemaDao;
-    }
-
-    public void setCinemaDao(CinemaDao cinemaDao) {
-        this.cinemaDao = cinemaDao;
-    }
-
-    public int getMovie_id() {
-        return movieId;
-    }
-
-    public void setMovie_id(int movieId) {
-        this.movieId = movieId;
-    }
 }

@@ -1,0 +1,15 @@
+{
+    "email": "alice.johnson@example.com",
+    "name": "Alice Johnson",
+    "login": {
+      "username": "alice.johnson",
+      "password": "securepassword123"
+    },
+    "address": {
+      "address": "789 High Street Road",
+      "city": "Chicago",
+      "province": "Illinois",
+      "postcode": "60601",
+      "country": "USA"
+    }
+}

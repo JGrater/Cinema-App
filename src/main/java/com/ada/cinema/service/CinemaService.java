@@ -5,30 +5,39 @@ import com.ada.cinema.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
 public class CinemaService {
 
     private final UserRepository userRepository;
+    private final LoginRepository loginRepository;
     private final PaymentRepository paymentRepository;
     private final SeatRepository seatRepository;
+    private final SeatAvailabilityRepository seatAvailabilityRepository;
     private final TicketRepository ticketRepository;
     private final ScreeningRepository screeningRepository;
     private final CinemaRepository cinemaRepository;
+    private final AddressRepository addressRepository;
+    private final ScreenRepository screenRepository;
 
-    public UserDao registerUser(UserDao user) {
+    public UserDao addUser(UserDao user) {
         return userRepository.save(user);
     }
 
+    public LoginDao addLogin(LoginDao login) {
+        return loginRepository.save(login);
+    }
+
     public UserDao getUser(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password);
+        LoginDao login = loginRepository.findByUsernameAndPassword(username, password);
+        if (login == null) {
+            return null;
+        }
+        return login.getUserDao();
     }
 
     public UserDao getUserById(String user_id) {
@@ -51,6 +60,10 @@ public class CinemaService {
         return ticketRepository.findAllByUserDao(getUserById(user_id));
     }
 
+    public ScreenDao getScreenById(String screen_id) {
+        return screenRepository.findById(UUID.fromString(screen_id)).get();
+    }
+
     public ScreeningDao getScreeningById(String screening_id) {
         return screeningRepository.findById(UUID.fromString(screening_id)).get();
     }
@@ -59,48 +72,45 @@ public class CinemaService {
         return cinemaRepository.findById(UUID.fromString(cinema_id)).get();
     }
 
-    public List<CinemaDao> getCinemaListByMovie(int movie_id) {
-        List<ScreeningDao> screeningList = screeningRepository.findAllByMovieId(movie_id);
-        List<CinemaDao> cinemaList = new ArrayList<>();
-        for (ScreeningDao screeningDao : screeningList) {
-            cinemaList.add(cinemaRepository.findById(screeningDao.getCinemaDao().getId()).get());
-        }
-        return cinemaList.stream()
-            .collect(Collectors.toMap(v -> v.getId(),
-                v -> v,
-                (a, b) -> a
-            )).values().stream().toList();
+    public List<ScreeningDao> getScreeningsByMovieId(int movie_id) {
+        return screeningRepository.findAllByMovieId(movie_id);
     }
 
-    public List<ScreeningDao> getScreeningsByCinemaAndMovie(String cinema_id, int movie_id) {
-        return screeningRepository.findAllByCinemaDaoAndMovieId(getCinemaById(cinema_id), movie_id);
+    public List<ScreenDao> getScreensByCinemaID(String cinema_id) {
+        return screenRepository.findAllByCinemaDao(getCinemaById(cinema_id));
     }
 
-    public List<SeatDao> getAllSeatsByCinemaIDAndScreen(String cinema_id, int screen_number) {
-        return seatRepository.findAllByCinemaDaoAndScreenNumber(getCinemaById(cinema_id), screen_number);
+    public List<ScreeningDao> getScreeningsByScreen(ScreenDao screen) {
+        return screeningRepository.findAllByScreenDao(screen);
     }
 
-    public List<SeatDao> getAllSeatsByCinemaAndScreen(CinemaDao cinema, int screen_number) {
-        return seatRepository.findAllByCinemaDaoAndScreenNumber(cinema, screen_number);
+    public List<ScreeningDao> getScreeningsByScreenAndMovieId(ScreenDao screenDao, int movie_id) {
+        return screeningRepository.findAllByScreenDaoAndMovieId(screenDao, movie_id);
+    }
+
+    public List<SeatDao> getAllSeatsByScreenId(String screen_id) {
+        return seatRepository.findAllByScreenDao(getScreenById(screen_id));
+    }
+
+    public List<SeatDao> getAllSeatsByScreen(ScreenDao screen) {
+        return seatRepository.findAllByScreenDao(screen);
     }
 
     public List<SeatDao> getSeatsAvailableByScreening(String screening_id) {
-        ScreeningDao screening = getScreeningById(screening_id);
-        List<TicketDao> purcahsedTicketList = ticketRepository.findAllByScreeningDao(screening);
-
-        if (purcahsedTicketList.isEmpty()) {
-            return getAllSeatsByCinemaAndScreen(screening.getCinemaDao(), screening.getScreen_number());
-        }
-
-        return seatRepository.findAllAvailableSeats(
-                purcahsedTicketList,
-                screening.getCinemaDao().getId(),
-                screening.getScreen_number()
-        );
+        List<SeatAvailabilityDao> availableSeats = seatAvailabilityRepository.findAllByScreeningDaoAndIsAvailable(getScreeningById(screening_id), true);
+        return availableSeats.stream().map(SeatAvailabilityDao::getSeatDao).collect(Collectors.toList());
     }
 
     public CinemaDao addCinema(CinemaDao cinemaDao) {
         return cinemaRepository.save(cinemaDao);
+    }
+
+    public AddressDao addAddress(AddressDao addressDao) {
+        return addressRepository.save(addressDao);
+    }
+
+    public ScreenDao addScreen(ScreenDao screenDao) {
+        return screenRepository.save(screenDao);
     }
 
     public ScreeningDao addScreening(ScreeningDao screeningDao) {
@@ -111,6 +121,10 @@ public class CinemaService {
         return seatRepository.save(seatDao);
     }
 
+    public SeatAvailabilityDao addSeatAvailability(SeatAvailabilityDao seatAvailabilityDao) {
+        return seatAvailabilityRepository.save(seatAvailabilityDao);
+    }
+
     public TicketDao addTicket(TicketDao ticketDao) {
         return ticketRepository.save(ticketDao);
     }
@@ -119,5 +133,10 @@ public class CinemaService {
         return paymentRepository.save(paymentDao);
     }
 
+    public void updateSeatAvailability(String screening_id, String seat_id, boolean isAvailable) {
+        SeatAvailabilityDao seatAvailabilityDao = seatAvailabilityRepository.findByScreeningDaoAndSeatDao(getScreeningById(screening_id), getSeatById(seat_id));
+        seatAvailabilityDao.setAvailable(isAvailable);
+        seatAvailabilityRepository.save(seatAvailabilityDao);
+    }
 
 }
